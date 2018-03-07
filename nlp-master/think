@@ -1,0 +1,150 @@
+
+1.Hi, I want to book a meeting room at 11 am for 4 people /I would like to book a meeting room this afternoon 3pm for 8 people 
+
+1.1 I want to book a meeting room from 11am to 3pm for 5 people.
+
+1.1.1 I want to book a meeting room at 11am for 2 hours
+
+1.1.1.1 We will have an one hour meeting at 4pm for 6/six people. 
+
+2.Hi, could you help me book a meeting room with at least 6 seats ? 
+
+3.Hi, Our team will have a meeting at 1 pm. Would you help me find a meeting room?
+
+4.i need a room @ 10:30 am in building A, 5-7ish people
+
+5.afternoon meeting 2-4 ish , 6 people.
+ 
+6.I'd like to book a room to hold  a group of 3 people in the morning. 
+
+7.book for 1 hour and any time between 9-11 works
+
+8.any meeting room available this Tuesday morning?
+
+9.Reserve a small-sized meeting room please
+
+final dict={
+starttime:1517450400.0 #'2018-02-01 10:00'(float)
+endtime:1517451300.0 #'2018-02-01 10:15'(float)
+people:6(int)
+building:A(string)
+floor:11(int)
+}
+
+
+
+
+1）抓时间
+目的：得到两个时间戳，开始时间/结束时间。
+
+&&什么算是时间？
+{
+分四种：具体时间、日期、持续时间、不知道怎么搞的时间
+
+具体时间：『
+10:30(默认这是24H制的)  
+10：30 am
+10：30am
+10：30 pm
+10：30pm
+11 am 11am
+2 pm 2pm
+』
+
+日期：『
+
+today
+tomorrow
+the day after tomorrow
+this friday
+next friday
+』
+
+持续时间：『
+25 minutes
+twenty five minutes
+1 hour(s)
+one hour(s)
+2 day(s)
+one day
+1 week
+two weeks
+』
+
+
+
+
+
+
+
+
+不知道怎么搞『
+(开始时间和结束时间都在一个范围内)
+afternoon meeting 2-4 ish
+book for 1 hour and any time between 9-11 works
+』
+}
+
+&&处理：
+{
+###s1:找有没有具体时间，得到开始具体时间和结束具体时间字符串（24H）
+
+分支1.没说开始时间的（抓不到一个具体时间）/有两个以上的具体时间 -->错误，回邮件询问  #2根本没说时间 or #5 6 开始时间和结束时间都在一个时间段里面的超级模糊查询{几种特殊情况（在抓不到一个开始时间的情况下）：morning.afternoon}
+
+分支2.说了开始时间的（至少有一个具体时间格式）
+
+{  
+2.1只能抓到一个具体时间的：
+
+{
+
+s1.具体时间标准化：am pm映射成24小时制，找日期，拼接
+s2.默认抓到的是开始时间
+s3.{
+找有没有持续时间：
+b1：抓到一个持续时间->处理持续时间语句得到持续时间->结束时间为开始时间加持续时间
+b2: 没抓到持续时间->默认结束时间为开始时间加一小时（询问？）
+b3:抓到多个持续时间->错误，读不懂
+
+}
+
+}
+}
+
+2.2 能抓到两个具体时间的：
+{
+s1.先都化成24小时制
+s2.小的是开始时间 大的是结束时间（没有考虑跨天的问题）
+
+###s2：找日期   找得到一个->日期映射，得到2018-01-01的字符串
+		找到多个->错误，读不懂	        
+		找不到->默认日期是today，日期映射
+       (默认开始时间和结束时间在同一天，没有考虑跨天问题)
+
+
+###s3:开始具体时间和结束具体时间分别拼日期，得到两个时间戳
+
+}
+
+}
+
+2.3 抓到多个具体时间的->错误，读不懂
+
+2）抓楼号
+规则：building A
+找到一个：正常，返回字符串
+匹配不到：返回“NOT FOUND”  写qurey的时候根据是否抓到地点和人数（NOT FOUND）设置不同的query，去掉地点的限制条件
+找到多个：听不懂
+
+3）抓人数
+规则：4/four people  6/six seat（s） 5-7ish people/seats(返回7)   
+找到一个：正常，返回数字
+匹配不到：同上， 注意QUERY按照人数从低到高排序(特殊情况：small-sized（返回的人数设成最小值，就小的排在前面了，让用户自己选就好了） med-sized(返回的人数设成6（最小是6人，其他和前面一样）))
+找到多个：听不懂
+
+4）抓楼层
+规则：7F 7th/1st/2nd/3rd floor
+找到一个：正常，返回数字
+匹配不到：同上
+找到多个：听不懂
+
