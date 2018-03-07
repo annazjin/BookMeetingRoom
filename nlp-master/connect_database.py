@@ -73,7 +73,7 @@ def select_database(sentence):
         
         reply_rowdic_list=[]
         for row in rows:
-            reply_rowdic={'roomid':row[0],'roomname':row[1],'floor':row[2],'maxpeople':row[3],'building':row[4]}
+            reply_rowdic={'roomid':row[0],'roomname':row[1],'building':row[2],'floor':row[3],'maxpeople':row[4]}
             reply_rowdic_list.append(reply_rowdic)
         
         reply=reply_rowdic_list
