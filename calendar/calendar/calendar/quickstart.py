@@ -21,8 +21,8 @@ from oauth2client.client import OAuth2WebServerFlow
 import connectDB
 # import sendMail
 
-client_id = "893327939461-1jdj062qeb3qh4hsve9kag1rdqpd1hed.apps.googleusercontent.com"
-client_secret = "Vt8nW7r1BVk43iIFWjYrySMH"
+client_id = "799671597294-q0m9n9f70nccch4d54e24oed587alm8n.apps.googleusercontent.com"
+client_secret = "TgmU49zRsCaWq2Y3QkywEnJs"
 
 # The scope URL for read/write access to a user's calendar data
 scope = 'https://www.googleapis.com/auth/calendar'
