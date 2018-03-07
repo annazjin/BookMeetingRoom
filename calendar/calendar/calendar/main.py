@@ -5,6 +5,7 @@ class check:
     global value
 
     def job():
+        # traverse all meeting room email account every 18 seconds
         quickstart.main('suzhouhe.dat')
         quickstart.main('dashijie.dat')
         

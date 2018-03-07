@@ -21,6 +21,14 @@ from oauth2client.client import OAuth2WebServerFlow
 import connectDB
 # import sendMail
 
+''' 
+
+
+
+
+
+'''
+
 client_id = "799671597294-q0m9n9f70nccch4d54e24oed587alm8n.apps.googleusercontent.com"
 client_secret = "TgmU49zRsCaWq2Y3QkywEnJs"
 
@@ -33,9 +41,9 @@ scope = 'https://www.googleapis.com/auth/calendar'
 flow = OAuth2WebServerFlow(client_id, client_secret, scope)
 
 global CalendarID
-global localtime
-localtime=time.mktime(datetime.datetime.now().timetuple())
-print (localtime)
+# global localtime
+# localtime=time.mktime(datetime.datetime.now().timetuple())
+# print (localtime)
 
 
 def get_credentials(filename):
@@ -68,7 +76,8 @@ def main(filename):
         for calendar_list_entry in calendar_list['items']:
             CalendarID=calendar_list_entry['id']
             CalendarName=calendar_list_entry['summary']
-            print (CalendarName)
+            print (CalendarID)
+            
             
         page_token=calendar_list.get('nextPageToken')
         if not page_token:
@@ -108,7 +117,7 @@ def main(filename):
         return oldevents,newevents
     
 
-    # change to starttime and endtime into stamp 
+    # change to starttime and endtime of an event into timestamp 
     def change_timeStamp(event):
         start=event['start'].get('dateTime',event['start'].get('date'))
         sstart=start.encode()
@@ -128,10 +137,14 @@ def main(filename):
 
         return starttime,endtime
 
+
+    # insert the accepted meeting invitation into database
     def insertDB(geteventid,eventname,roomid,starttime,endtime,bookpeople):
         connectDB.connAndInsert(geteventid, eventname, roomid, starttime,endtime,bookpeople)
 
     
+    # compare every 'newevent' to every 'oldevent' to check if they are conflicting or not, then decide to accept the meeting invitation
+    # or decline it
     def updateNewevent():
         oldevents,newevents=getNewevent()
         # if newevents:
@@ -144,7 +157,7 @@ def main(filename):
                 neweventIds = newevent['id']
                 organizer=newevent['organizer'].get('email')
                 sequence=newevent['sequence']
-                print(sequence)
+                # print(sequence)
                 print('newevent is')
                 print(newevent['summary'])
                 # retrieve responseStatus of attendee, the current account logged in to the gmail,  according to the 'neweventIds' just retrieved
@@ -166,7 +179,7 @@ def main(filename):
                                 print('now this new event is comparing to ')
                                 print(oldevent['summary'])
                                 ostart,oend = change_timeStamp(oldevent)
-                                if () or (sequence!=0) or not((nstart <= ostart and nend <= ostart) or (nstart >= oend and nend >= oend)):
+                                if (sequence!=0) or not((nstart <= ostart and nend <= ostart) or (nstart >= oend and nend >= oend)):
                                     newattendee['responseStatus']='declined'
                                     thenewevent['status']='cancelled'
                                     updated_event=service.events().update(calendarId=CalendarID,eventId=neweventIds,body=thenewevent).execute() 
@@ -228,7 +241,7 @@ def main(filename):
       
     
          
-if __name__ == '__main__':
-    # main('PWCcredentials.dat')
-    main('credentialsPWC.dat')
+# if __name__ == '__main__':
+#     main('PWCcredentials.dat')
+#     main('credentialsPWC.dat')
  
