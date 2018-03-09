@@ -13,7 +13,7 @@ global value
 class getList:
     def getl(self):
         hostname = 'imap.gmail.com' 
-        username = 'bookagency.pwc@gmail.com'
+        username = 'anna.z.jin@gmail.com'
         passwd = 'Pwcwelcome2'
         List=[]
         c = IMAPClient(hostname, ssl= True) 
