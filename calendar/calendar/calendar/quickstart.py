@@ -47,8 +47,16 @@ global CalendarID
 
 
 def get_credentials(filename):
-    
-    storage = Storage(filename)
+    home_dir = os.getcwd()
+    credential_dir = os.path.join(home_dir, 'credentials')
+    if not os.path.exists(credential_dir):
+        os.makedirs(credential_dir)
+    credential_path = os.path.join(credential_dir,
+                                   '%s' % (filename))
+
+
+    storage = Storage(credential_path)
+    # storage = Storage(filename)
     credentials = storage.get()
     if credentials is None or credentials.invalid:
         credentials = tools.run_flow(flow, storage, tools.argparser.parse_args())
