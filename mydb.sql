@@ -2,12 +2,18 @@
 -- PostgreSQL database dump
 --
 
+-- Dumped from database version 10.3
+-- Dumped by pg_dump version 10.3
+
 SET statement_timeout = 0;
 SET lock_timeout = 0;
+SET idle_in_transaction_session_timeout = 0;
 SET client_encoding = 'UTF8';
 SET standard_conforming_strings = on;
+SELECT pg_catalog.set_config('search_path', '', false);
 SET check_function_bodies = false;
 SET client_min_messages = warning;
+SET row_security = off;
 
 --
 -- Name: plpgsql; Type: EXTENSION; Schema: -; Owner: 
@@ -23,17 +29,15 @@ CREATE EXTENSION IF NOT EXISTS plpgsql WITH SCHEMA pg_catalog;
 COMMENT ON EXTENSION plpgsql IS 'PL/pgSQL procedural language';
 
 
-SET search_path = public, pg_catalog;
-
 SET default_tablespace = '';
 
 SET default_with_oids = false;
 
 --
--- Name: event; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
+-- Name: event; Type: TABLE; Schema: public; Owner: postgres
 --
 
-CREATE TABLE event (
+CREATE TABLE public.event (
     eventid character varying NOT NULL,
     eventname character varying,
     roomid character varying,
@@ -46,10 +50,10 @@ CREATE TABLE event (
 ALTER TABLE public.event OWNER TO postgres;
 
 --
--- Name: room; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
+-- Name: room; Type: TABLE; Schema: public; Owner: postgres
 --
 
-CREATE TABLE room (
+CREATE TABLE public.room (
     roomid character varying NOT NULL,
     roomname character varying,
     building character(2),
@@ -64,7 +68,9 @@ ALTER TABLE public.room OWNER TO postgres;
 -- Data for Name: event; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
-COPY event (eventid, eventname, roomid, starttime, endtime, bookpeople) FROM stdin;
+COPY public.event (eventid, eventname, roomid, starttime, endtime, bookpeople) FROM stdin;
+0tphdj39dk6vbamgbfo3f1d09c	Meeting Invitation	pwcsuzhouhe@gmail.com	1521136800.0	1521144000.0	anna.z.jin@gmail.com
+5nrhm709j7kuligf7ulc687m80	Meeting Invitation	pwcsuzhouhe@gmail.com	1521147600.0	1521151200.0	anna.z.jin@gmail.com
 \.
 
 
@@ -72,37 +78,25 @@ COPY event (eventid, eventname, roomid, starttime, endtime, bookpeople) FROM std
 -- Data for Name: room; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
-COPY room (roomid, roomname, building, floor, maxpeople) FROM stdin;
-suzhouhe.pwc@gmail.com	suzhouhe	A 	7	10
-dashijie.pwc@gmail.com	suzhouhe	A 	11	8
-renminguangchang.pwc@gmail.com	renminguangchang	B 	6	12
+COPY public.room (roomid, roomname, building, floor, maxpeople) FROM stdin;
+pwcsuzhouhe@gmail.com	suzhouhe	A 	7	10
 \.
 
 
 --
--- Name: event_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres; Tablespace: 
+-- Name: event event_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
-ALTER TABLE ONLY event
+ALTER TABLE ONLY public.event
     ADD CONSTRAINT event_pkey PRIMARY KEY (eventid);
 
 
 --
--- Name: room_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres; Tablespace: 
+-- Name: room room_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
-ALTER TABLE ONLY room
+ALTER TABLE ONLY public.room
     ADD CONSTRAINT room_pkey PRIMARY KEY (roomid);
-
-
---
--- Name: public; Type: ACL; Schema: -; Owner: postgres
---
-
-REVOKE ALL ON SCHEMA public FROM PUBLIC;
-REVOKE ALL ON SCHEMA public FROM postgres;
-GRANT ALL ON SCHEMA public TO postgres;
-GRANT ALL ON SCHEMA public TO PUBLIC;
 
 
 --
