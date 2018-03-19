@@ -150,7 +150,7 @@ def select_database(sentence):
     
     
     conn.close()
-    return reply
+    return reply,resultdict
         
         
 

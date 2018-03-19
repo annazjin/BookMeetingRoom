@@ -18,15 +18,20 @@ import datetime
 from time import *
 
 mail_host= "smtp.gmail.com" 
-mail_user= "anna.z.jin@gmail.com"   
-mail_pass=  "Pwcwelcome2" 
+mail_user= "smart.meeting.agent@gmail.com"   
+mail_pass=  "Monday123" 
 mail_port="587"
-resultdict=nlparser.parser(sentence)[0]
-startTime = resultdict['starttime'].strftime("%Y-%m-%dT%H:%M:%S+08:00")
-endTime=resultdict['endtime'].strftime("%Y-%m-%dT%H:%M:%S+08:00")
 
-def send_mail(to_list,sub,content):  
-    
+
+
+def send_mail(to_list,sub,content,resultdict): 
+    start=datetime.datetime.fromtimestamp( resultdict['starttime'] )
+    end=datetime.datetime.fromtimestamp( resultdict['endtime'] )
+    print(start)
+    print(type(start))
+    startTime = start.strftime("%Y-%m-%dT%H:%M:%S-04:00")
+    print(startTime)
+    endTime=end.strftime("%Y-%m-%dT%H:%M:%S-04:00")
     if type(content)==str:
         mail_msg='''
         <html>

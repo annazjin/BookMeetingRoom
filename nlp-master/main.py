@@ -18,15 +18,15 @@ class check:
                 sentence=item['Subject']
                 people=item['From']
                 
-                reply=connect_database.select_database(sentence)
+                reply,resultdict=connect_database.select_database(sentence)
                 #回复邮件
-                smtp.send_mail(people,'Please choose the proper meeting room',reply)
+                smtp.send_mail(people,'Please choose the proper meeting room',reply,resultdict)
                 
                 
                 print "Successfully sent email to: "+people
             
         
-    schedule.every(0.1).minutes.do(job)
+    schedule.every(0.05).minutes.do(job)
     while True:
         schedule.run_pending()  
 

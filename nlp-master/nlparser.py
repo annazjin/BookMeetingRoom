@@ -19,6 +19,10 @@ sys.setdefaultencoding('utf-8')
 hm = "\d+:\d+"
 apm="[ap]m"
 
+
+
+
+
 #get 8:00 am/9:00 pm
 def get_precise_time_p1(sentence,precise_time_list):
     
@@ -565,7 +569,7 @@ def get_floor(sentence):
 
 #------------------------------------------------主函数----------------------------------------------------------------
 def parser(sentence):
-
+    
     resultdict={'starttime':0,'endtime':0,'people':0,'building':0,'floor':0}
     message="null"
     
@@ -716,6 +720,8 @@ def parser(sentence):
         message= "More than one 'floor' found, nlp process can not be carried out, please try to follow the example sentence."+"\n"+"example sentence: I want to book a meeting room from 11am to 3pm for 5 people in building A on 7F."
     
     resultdict['floor']=floor
+
+    
     
     return resultdict,message
     

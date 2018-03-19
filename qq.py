@@ -12,9 +12,9 @@ global List
 global value
 class getList:
     def getl(self):
-        hostname = 'imap.gmail.com' 
-        username = 'smart.meeting.agent@gmail.com'
-        passwd = 'Monday123'
+        hostname = 'imap.qq.com' 
+        username = 'pwcroommanager@foxmail.com'
+        passwd = 'nzksqayykcvjbead'
         List=[]
         c = IMAPClient(hostname, ssl= True) 
         try:
@@ -61,8 +61,11 @@ class getList:
                     List.append(dic) 
         finally:
             c.logout()
+        print (List)
         return List
 def getvalue():
     getl= getList()
     value=getl.getl()
     return value
+if __name__=="__main__":
+    getvalue()

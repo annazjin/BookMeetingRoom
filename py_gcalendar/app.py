@@ -58,7 +58,7 @@ def index():
   try:
       
       event = {
-      'summary': 'Google I/O 2018',
+      'summary': 'Meeting Invitation',
       'description': 'A chance to hear more about Google\'s developer products.',
       'start': {
           # 'dateTime': '2018-05-29T09:00:00-07:00',
