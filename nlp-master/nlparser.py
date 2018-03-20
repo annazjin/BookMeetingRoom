@@ -70,14 +70,19 @@ def get_precise_time_p1(sentence,precise_time_list):
     return new_sentence,precise_time
     pass
 
-#get 1 am /9 pm
+#get 1 am /9 pm/one am nine pm(for voice)
 def get_precise_time_p2(sentence,precise_time_list):
     regxp3="(" +"\d+"+" ("+"am" + "))"
     regxp32="(" +"\d+"+" ("+"pm" + "))"
     regxp4="(" +"\d+"+"("+"am" + "))"
     regxp42="(" +"\d+"+"("+"pm" + "))"
 
-
+    #one am/nine pm(for voice)
+    regxpv = "(" + numbers +" ("+"am" + "))"
+    regxpv2 = "(" + numbers +" ("+"pm" + "))"
+    
+    regv= re.compile(regxpv)
+    regv2= re.compile(regxpv2)
     reg3=re.compile(regxp3)
     reg32=re.compile(regxp32)
     reg4=re.compile(regxp4)
@@ -108,6 +113,18 @@ def get_precise_time_p2(sentence,precise_time_list):
     found = [a[0] for a in found if len(a) > 1]
     for item in found:
         precise_time.append(item)
+    
+
+    found = regv.findall(sentence)
+    found = [a[0] for a in found if len(a) > 1]
+    for item in found:
+        precise_time.append(item)
+
+    found = regv2.findall(sentence)
+    found = [a[0] for a in found if len(a) > 1]
+    for item in found:
+        precise_time.append(item)
+    
     
     for item in precise_time:
         new_sentence=re.sub(item,"",new_sentence)
@@ -240,10 +257,26 @@ def get_regular_precise_time(sentence):
     #未经格式化的所有抓出来的准确时间
     timelist= get_precise_time_3[1]
     
+    #把timelist统一转换成只有数字类型的（one am -> 1 am）
+    int_time_list=[]
+    for item in timelist:
+        
+        
+        if re.search(numbers, item, re.IGNORECASE):
+            split_item = re.split(r'\s(?=am|pm)', \
+                                                            item, re.IGNORECASE)
+            value = split_item[0]
+            unit = split_item[1]
+            num_list = map(lambda s:hashnum(s),re.findall(numbers + '+', \
+                                        value, re.IGNORECASE))
+            item = `sum(num_list)` + ' ' + unit
+            int_time_list.append(item)
+        else:
+            int_time_list.append(item)
     
     #初始化标准格式准确时间列表
     rtimelist=[]
-    for item in timelist:
+    for item in int_time_list:
 
         if ("pm" in item):
             
@@ -728,3 +761,9 @@ def parser(sentence):
 
 
 #------------------------------------------------主函数---------------------------------------------------------
+
+
+    
+
+if __name__ == '__main__':
+    print get_regular_precise_time("i want to book a meeting room at ten am,")
